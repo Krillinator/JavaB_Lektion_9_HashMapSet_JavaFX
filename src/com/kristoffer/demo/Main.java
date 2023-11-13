@@ -31,6 +31,8 @@ public class Main {
         inventorySlots.put(PANTS, pantsOfWisdom);
         inventorySlots.put(FEET, bootsOfStars);
 
+        inventorySlots.forEach((K, V) -> System.out.println(K + " " + V)); // Looping
+
         // Debug
         System.out.println(inventorySlots);
         System.out.println(inventorySlots.get(GLOVES).getPrice());
