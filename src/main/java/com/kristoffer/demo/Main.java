@@ -1,14 +1,19 @@
 package com.kristoffer.demo;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
+    private final VBox vbox = new VBox();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -16,27 +21,63 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // Instantiate
-        StackPane root = new StackPane();
+        // Panes
+        BorderPane borderPane = new BorderPane();
 
         // Nodes
-        Button clickMeButton = new Button("Click me!");
+        Button btnAddLabel = new Button("Add Label");
+        Label textIntroduction = new Label("Welcome to Our Application!");
+        TextField input = new TextField("placeholder?");
 
-        // Listeners
-        clickMeButton.setOnAction(event -> {
-            new Alert(Alert.AlertType.INFORMATION) {{
-               setContentText("Hello");
-            }}.showAndWait();
+        // Positioning
+        borderPane.setTop(textIntroduction);
+        borderPane.setRight(btnAddLabel);
+        borderPane.setBottom(input);
+        borderPane.setCenter(vbox);
+
+        /* This is an OK solution too!
+        BorderPane.setAlignment(btnAddLabel, Pos.CENTER);
+        BorderPane.setAlignment(vbox, Pos.CENTER);
+        BorderPane.setAlignment(textIntroduction, Pos.CENTER);
+        */
+
+        borderPane.getChildren().forEach(node -> {
+            BorderPane.setAlignment(node, Pos.CENTER);
         });
 
-        // Styling
-        root.getChildren().add(clickMeButton);
-        root.setStyle("-fx-background-color: lightblue;");
+        vbox.setAlignment(Pos.CENTER);
 
-        // Set Scene
-        primaryStage.setTitle("My Application :) ");
-        primaryStage.setScene(new Scene(root, 1000, 300));
+        // Listeners
+        setupListeners(btnAddLabel, input);
+
+        // Finalize
+        primaryStage.setTitle("Final Example");
+        primaryStage.setScene(new Scene(borderPane, 400, 300));
         primaryStage.show();
-
     }
+
+    public void setupListeners(Button btnAddLabel, TextField input) {
+        btnAddLabel.setOnAction(e -> {
+            addNewLabel();
+        });
+
+        input.setOnAction(e -> textInput(
+                input.getText()
+        ));
+    }
+
+    // Methods
+    public void textInput(String input) {
+        System.out.println("This is what you wrote: " + input);
+    }
+
+    public void addNewLabel() {
+        Label label = new Label("Test" + vbox.getChildren().size());
+        vbox.getChildren().add(label);
+
+        // Debugging
+        System.out.println("Debugging");
+        System.out.println(vbox.getChildren().size());
+    }
+
 }
